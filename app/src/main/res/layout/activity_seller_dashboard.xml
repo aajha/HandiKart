@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.handikart.SellerDashboard">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/welcomeSeller"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_seller"
+            android:textSize="22dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="16dp"/>
+        <ImageView
+            android:id="@+id/sellerlogo"
+            android:src="@mipmap/person_logo_round"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/welcomeSeller" />
+        <TextView
+            android:id="@+id/sellername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/seller_name"
+            android:textSize="22dp"
+            android:layout_below="@+id/sellerlogo"
+            android:layout_marginLeft="16dp"/>
+        <TextView
+            android:id="@+id/selleremail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/seller_email"
+            android:textSize="22dp"
+            android:layout_marginLeft="16dp"
+            android:layout_below="@+id/sellername" />
+        <TextView
+            android:id="@+id/sellercontact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/seller_contact"
+            android:textSize="22dp"
+            android:layout_marginLeft="16dp"
+            android:layout_below="@+id/selleremail" />
+        <Button
+            android:id="@+id/put_ad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/post_ad"
+            android:textSize="22dp"
+            android:textColor="@color/white"
+            android:background="@color/brickRed"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_below="@id/sellercontact"
+            android:drawableTop="@mipmap/handi_round"/>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
