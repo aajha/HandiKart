@@ -22,10 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Mode_selection" />
-        <activity
-            android:name=".SellerLogin"
-            android:label="@string/title_activity_seller_login" />
-        <activity android:name=".SellerDashboard"></activity>
+        <activity android:name=".Seller_Number_verification"></activity>
     </application>
 
 </manifest>

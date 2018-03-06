@@ -17,7 +17,7 @@ public class Mode_selection extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Mode_selection.this, SellerLogin.class));
+                startActivity(new Intent(Mode_selection.this, Seller_Number_verification.class));
             }
         });
     }
