@@ -2,6 +2,7 @@ package com.example.handikart;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -35,7 +36,8 @@ public class Seller_Number_verification extends AppCompatActivity {
     EditText mEdit;
     String Number;
     TextInputLayout numberWrapper;
-    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0;
+    Context context = Seller_Number_verification.this;
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 100;
 
     private void hideKeyboard() {
         View view = getCurrentFocus();
@@ -106,15 +108,8 @@ public class Seller_Number_verification extends AppCompatActivity {
             else
             {
                 Toast.makeText(getApplicationContext(), "Sending OTP and verifying...Please Wait...", Toast.LENGTH_LONG).show();
-                //send and verify OTP
-                /*Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + Number));
-                intent.putExtra("sms_body", "123456");
-                startActivity(intent);*/
 
-
-                /*SmsManager sm = SmsManager.getDefault();
-                String Message = "123456";
-                sm.sendTextMessage (Number, null, "Hello from Xamarin.Android", null, null);*/
+                //ActivityCompat.requestPermissions((Activity)context, new String[]{Manifest.permission.READ_SMS},100);
 
                 sendSMSMessage();
 
@@ -161,6 +156,16 @@ public class Seller_Number_verification extends AppCompatActivity {
                         MY_PERMISSIONS_REQUEST_SEND_SMS);
             }
         }
+        else {
+            sendMessage();
+        }
+    }
+
+    private void sendMessage() {
+        SmsManager smsManager = SmsManager.getDefault();
+        String num= "+91"+Number;
+        smsManager.sendTextMessage(num, null, "123456", null, null);
+        Toast.makeText(getApplicationContext(), "SMS sent.",Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -169,14 +174,10 @@ public class Seller_Number_verification extends AppCompatActivity {
             case MY_PERMISSIONS_REQUEST_SEND_SMS: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    SmsManager smsManager = SmsManager.getDefault();
-                    String num= "+91"+Number;
-                    smsManager.sendTextMessage(num, null, "123456", null, null);
-                    Toast.makeText(getApplicationContext(), "SMS sent.",
-                            Toast.LENGTH_LONG).show();
+                    sendMessage();
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+                            "SMS sending failed, please try again.", Toast.LENGTH_LONG).show();
                     return;
                 }
             }
