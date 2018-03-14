@@ -90,9 +90,9 @@ public class Seller_Number_verification extends AppCompatActivity {
         otpEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE) {
+                mButton.setVisibility(View.GONE);
+                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
                     hideKeyboard();
-                    mButton.setVisibility(View.GONE);
                     matchOTP();
                     return true;
                 }
@@ -174,7 +174,7 @@ public class Seller_Number_verification extends AppCompatActivity {
 
                 ///////////////////////////////////
 
-                //message = "1234";
+                message = "1234";
 
                 //send OTP
 
