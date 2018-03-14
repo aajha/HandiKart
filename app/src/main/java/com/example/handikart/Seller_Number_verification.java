@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.Random;
 
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
@@ -33,10 +34,13 @@ public class Seller_Number_verification extends AppCompatActivity {
 
 
     Button mButton;
+    Button reverifyButton;
     EditText mEdit;
     String Number;
     TextInputLayout numberWrapper;
-    Context context = Seller_Number_verification.this;
+    TextInputLayout OTPWrapper;
+    EditText otpEdit;
+    private String message;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 100;
 
     private void hideKeyboard() {
@@ -55,9 +59,15 @@ public class Seller_Number_verification extends AppCompatActivity {
         numberWrapper = (TextInputLayout) findViewById(R.id.layoutRegisterContacttext);
         numberWrapper.setHint("Enter Phone Number");
 
+        OTPWrapper = (TextInputLayout) findViewById(R.id.layoutEnterOTP);
+        OTPWrapper.setHint("Enter OTP :");
+
         //get contact number and check if it is 10 digits, else return error and reload
         mButton = (Button) findViewById(R.id.registercontactbutton);
         mEdit = (EditText) findViewById(R.id.registerContacttext);
+        otpEdit = (EditText)findViewById(R.id.enterOTPText);
+        reverifyButton = (Button) findViewById(R.id.reverifyButton);
+
         /*mEdit.setOnTouchListener(new View.OnTouchListener(){
             @SuppressLint("ClickableViewAccessibility")
             public boolean onTouch(View arg0, MotionEvent arg1)
@@ -77,16 +87,60 @@ public class Seller_Number_verification extends AppCompatActivity {
             }
         });
 
+        otpEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == EditorInfo.IME_ACTION_DONE) {
+                    hideKeyboard();
+                    mButton.setVisibility(View.GONE);
+                    matchOTP();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 verifyNumber();
+
+            }
+        });
+
+        reverifyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                startActivity(getIntent());
+
             }
         });
 
     }
+
+
+    void matchOTP()
+    {
+        String message_rcvd = OTPWrapper.getEditText().getText().toString();
+        if (message_rcvd.equals(message))
+        {
+            //go to next page
+            Toast.makeText(getApplicationContext(), "OTP matches..Number verified", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            //otp does not match->bring the REVERIFY button
+            Toast.makeText(getApplicationContext(), "OTP does not match..", Toast.LENGTH_LONG).show();
+            reverifyButton.setVisibility(View.VISIBLE);
+            //do reverification
+
+        }
+    }
+
     void verifyNumber()
     {
+        //boolean error=true;
         numberWrapper.setError(null);
         Number=numberWrapper.getEditText().getText().toString();
 
@@ -107,34 +161,31 @@ public class Seller_Number_verification extends AppCompatActivity {
             //no. is valid
             else
             {
-                Toast.makeText(getApplicationContext(), "Sending OTP and verifying...Please Wait...", Toast.LENGTH_LONG).show();
+                //error=false;
+                //Toast.makeText(getApplicationContext(), "Sending OTP and verifying...Please Wait...", Toast.LENGTH_LONG).show();
 
-                //ActivityCompat.requestPermissions((Activity)context, new String[]{Manifest.permission.READ_SMS},100);
+                numberWrapper.setVisibility(View.GONE);
+
+                //generate OTP
+
+                int OTPlength =3;
+                message = generateOTP(OTPlength);
+
+
+                ///////////////////////////////////
+
+                message = "1234";
+
+                //send OTP
 
                 sendSMSMessage();
 
-                Toast.makeText(getApplicationContext(), "OTP Sent...", Toast.LENGTH_LONG).show();
+                //make enter otp visible
+                OTPWrapper.setVisibility(View.VISIBLE);
 
-                /*SmsReceiver receiver = new SmsReceiver();
-                IntentFilter filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-                registerReceiver(receiver, filter);
-
-
-                //handle timeout error
-
-                String rcvdMsg=receiver.message;
-                if(rcvdMsg.compareTo(Message)==0)
-                {
-                    //Matching Message, go to next page
-                    Toast.makeText(getApplicationContext(), "Number is verified...", Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(), "Number is invalid", Toast.LENGTH_LONG).show();
-                }
-
-
-                //SmsRetrieverClient client = SmsRetriever.getClient(this);*/
+                //Toast.makeText(getApplicationContext(), "OTP Sent...", Toast.LENGTH_LONG).show();
+                //get OTP
+                //boolean otp_match=matchOTP(message_rcvd);
 
 
 
@@ -164,8 +215,18 @@ public class Seller_Number_verification extends AppCompatActivity {
     private void sendMessage() {
         SmsManager smsManager = SmsManager.getDefault();
         String num= "+91"+Number;
-        smsManager.sendTextMessage(num, null, "123456", null, null);
-        Toast.makeText(getApplicationContext(), "SMS sent.",Toast.LENGTH_LONG).show();
+        smsManager.sendTextMessage(num, null, message, null, null);
+        //Toast.makeText(getApplicationContext(), "SMS sent.",Toast.LENGTH_LONG).show();
+    }
+
+    private String generateOTP(int otPlength) {
+        int lowerlimit= (int) Math.pow(10,otPlength);
+        int upperlimit= ((int) Math.pow(10,otPlength+1))-1;
+        Random randomNum = new Random();
+        int OTP = lowerlimit + randomNum.nextInt(upperlimit-lowerlimit);
+        String Otp= Integer.toString(OTP);
+        return Otp;
+
     }
 
     @Override
