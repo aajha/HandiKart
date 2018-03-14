@@ -174,7 +174,7 @@ public class Seller_Number_verification extends AppCompatActivity {
 
                 ///////////////////////////////////
 
-                message = "1234";
+                //message = "1234";
 
                 //send OTP
 
