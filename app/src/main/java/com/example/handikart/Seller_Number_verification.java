@@ -1,23 +1,18 @@
 package com.example.handikart;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -25,10 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.Random;
 
-import com.google.android.gms.auth.api.phone.SmsRetriever;
-import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
+import java.util.Random;
 
 public class Seller_Number_verification extends AppCompatActivity {
 
@@ -87,16 +80,37 @@ public class Seller_Number_verification extends AppCompatActivity {
             }
         });
 
-        otpEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//        otpEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+//                //mButton.setVisibility(View.GONE);
+//                if (id == EditorInfo.IME_ACTION_DONE || otpEdit.getText().length() == 4) {
+//                    hideKeyboard();
+//                    matchOTP();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
+        otpEdit.addTextChangedListener(new TextWatcher() {
+
             @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                mButton.setVisibility(View.GONE);
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if(s.length() == 4)
+                {
                     hideKeyboard();
                     matchOTP();
-                    return true;
                 }
-                return false;
             }
         });
 
@@ -174,7 +188,7 @@ public class Seller_Number_verification extends AppCompatActivity {
 
                 ///////////////////////////////////
 
-                message = "1234";
+//                message = "1234";
 
                 //send OTP
 
@@ -182,6 +196,7 @@ public class Seller_Number_verification extends AppCompatActivity {
 
                 //make enter otp visible
                 OTPWrapper.setVisibility(View.VISIBLE);
+                mButton.setVisibility(View.GONE);
 
                 //Toast.makeText(getApplicationContext(), "OTP Sent...", Toast.LENGTH_LONG).show();
                 //get OTP
