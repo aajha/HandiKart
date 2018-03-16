@@ -1873,3 +1873,11 @@ Yes. Both these methods can be combined. Claims are overridden in the order they
 
 **Do I need to implement any new assertions to consume the JWT that the Mobile SDK generates?**  
 No. You can use the existing CA API Gateway assertions, Encode/Decode Json Web Token.
+
+## collapsible markdown?
+<details><summary>CLICK ME</summary>
+<p>
+#### yes, even hidden code blocks!
+print("hello world!")
+</p>
+</details>
